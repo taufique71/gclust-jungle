@@ -4,3 +4,6 @@
 [submodule "dependencies/infomap"]
 	path = dependencies/infomap
 	url = https://github.com/mapequation/infomap.git
+[submodule "dependencies/igraph"]
+	path = dependencies/igraph
+	url = https://github.com/igraph/igraph.git
