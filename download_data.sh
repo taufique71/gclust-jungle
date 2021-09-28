@@ -76,7 +76,7 @@ fi
 
 if [ ! -d "isolates-subgraphs" ]; then
     mkdir "isolates-subgraphs"
-    pushd
+    pushd "isolates-subgraphs"
     if [ ! -f "subgraph2_iso_vs_iso_30_70length_ALL.m100.oneindexed.mtx" ]; then
         wget https://portal.nersc.gov/project/m1982/HipMCL/subgraphs/subgraph2_iso_vs_iso_30_70length_ALL.m100.oneindexed.mtx
     fi
