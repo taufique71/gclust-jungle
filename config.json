@@ -1,184 +1,231 @@
 {
+    "algorithms": [
+        {
+            "name": "infomap"
+        }
+    ],
     "dataset": [
         {
             "name": "ca-GrQc",
             "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/ca-GrQc",
             "filename": "ca-GrQc",
-            "conversion": {
-                "convert": "no",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
         },
         {
             "name": "ca-CondMat",
             "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/ca-CondMat",
             "filename": "ca-CondMat",
-            "conversion": {
-                "convert": "no",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
         },
         {
             "name": "com-DBLP",
             "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/com-DBLP",
             "filename": "com-DBLP",
-            "conversion": {
-                "convert": "no",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
+        },
+        {
+            "name": "com-LiveJournal",
+            "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/com-LiveJournal",
+            "filename": "com-LiveJournal",
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
+        },
+        {
+            "name": "com-Orkut",
+            "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/com-Orkut",
+            "filename": "com-Orkut",
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
         },
         {
             "name": "email-Eu-core",
             "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/email-Eu-core",
             "filename": "email-Eu-core",
-            "conversion": {
-                "convert": "no",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
         },
         {
             "name": "email-Enron",
             "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/email-Enron",
             "filename": "email-Enron",
-            "conversion": {
-                "convert": "no",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
         },
         {
             "name": "email-EuAll",
             "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/email-EuAll",
             "filename": "email-EuAll",
-            "conversion": {
-                "convert": "no",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
         },
         {
             "name": "wiki-Talk",
             "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/wiki-Talk",
             "filename": "wiki-Talk",
-            "conversion": {
-                "convert": "no",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
-        },
-        {
-            "name": "viruses",
-            "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/viruses",
-            "filename": "vir_vs_vir_30_50length_propermm",
-            "conversion": {
-                "convert": "no",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
-        },
-        {
-            "name": "archea",
-            "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/archea",
-            "filename": "Renamed_arch_vs_arch_30_50length.indexed",
-            "conversion": {
-                "convert": "no",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
-        },
-        {
-            "name": "subgraph2",
-            "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/isolate-subgraphs",
-            "filename": "subgraph2_iso_vs_iso_30_70length_ALL.m100.oneindexed",
-            "conversion": {
-                "convert": "no",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
         },
         {
             "name": "nh2010",
             "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/nh2010",
             "filename": "nh2010",
-            "conversion": {
-                "convert": "yes",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
         },
         {
             "name": "in2010",
             "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/in2010",
             "filename": "in2010",
-            "conversion": {
-                "convert": "yes",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
         },
         {
             "name": "belgium_osm",
             "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/belgium_osm",
             "filename": "belgium_osm",
-            "conversion": {
-                "convert": "yes",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
+        },
+        {
+            "name": "europe_osm",
+            "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/europe_osm",
+            "filename": "europe_osm",
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
         },
         {
             "name": "asia_osm",
             "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/asia_osm",
             "filename": "asia_osm",
-            "conversion": {
-                "convert": "yes",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
         },
         {
             "name": "cnr-2000",
             "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/cnr-2000",
             "filename": "cnr-2000",
-            "conversion": {
-                "convert": "yes",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
         },
         {
             "name": "in-2004",
             "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/in-2004",
             "filename": "in-2004",
-            "conversion": {
-                "convert": "yes",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
         },
         {
             "name": "uk-2002",
             "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/uk-2002",
             "filename": "uk-2002",
-            "conversion": {
-                "convert": "yes",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
         },
         {
             "name": "webbase-2001",
             "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/webbase-2001",
             "filename": "webbase-2001",
-            "conversion": {
-                "convert": "no",
-                "from": "mtx",
-                "to": ["edgelist", "pajek"]
-            }
+            "convert": [
+            ]
+        },
+        {
+            "name": "viruses",
+            "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/viruses",
+            "filename": "vir_vs_vir_30_50length_propermm",
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
+        },
+        {
+            "name": "archea",
+            "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/archea",
+            "filename": "Renamed_arch_vs_arch_30_50length.indexed",
+            "convert": [
+                {"from": "edgelist", "to": "bcsr"}
+            ]
+        },
+        {
+            "name": "subgraph2",
+            "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/isolate-subgraphs",
+            "filename": "subgraph2_iso_vs_iso_30_70length_ALL.m100.oneindexed",
+            "convert": [
+            ]
+        },
+        {
+            "name": "delaunay_n22",
+            "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/delaunay_n22",
+            "filename": "delaunay_n22",
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
+        },
+        {
+            "name": "delaunay_n24",
+            "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/delaunay_n24",
+            "filename": "delaunay_n24",
+            "convert": [
+                {"from": "mtx", "to": "edgelist"},
+                {"from": "mtx", "to": "pajek"},
+                {"from": "edgelist", "to": "bcsr"}
+            ]
         }
     ]
 }
