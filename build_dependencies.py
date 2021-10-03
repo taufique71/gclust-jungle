@@ -47,8 +47,19 @@ def build_louvain():
     subp = subprocess.Popen(cmdlist)
     subp.wait()
 
+def build_spectral_modularity():
+    print("[build_spectral_modularity]")
+    os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
+    os.chdir("dependencies/spectral-modularity")
+    if Path("./spectral-modularity").is_file():
+        return
+    cmdlist = ["make", "all"]
+    subp = subprocess.Popen(cmdlist)
+    subp.wait()
+
 
 if __name__=="__main__":
     build_infomap()
     build_igraph()
     build_louvain()
+    build_spectral_modularity()

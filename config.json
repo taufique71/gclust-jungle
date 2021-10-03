@@ -202,7 +202,7 @@
         },
         {
             "name": "subgraph2",
-            "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/isolate-subgraphs",
+            "location": "/N/u2/t/taufique/Codes/gclust-jungle/data/isolates-subgraphs",
             "filename": "subgraph2_iso_vs_iso_30_70length_ALL.m100.oneindexed",
             "convert": [
             ]

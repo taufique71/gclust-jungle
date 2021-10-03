@@ -70,6 +70,25 @@ def run_louvain(config):
         f.write(content)
         f.close()
 
+def run_spectral_modularity(config):
+    print("[run_spectral_modularity]:", config["name"])
+    os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
+    os.chdir("dependencies/spectral-modularity")
+    cmdlist = [
+                "./spectral-modularity",
+                config["location"] + "/" + config["filename"] + "." + "edgelist",
+                config["location"] + "/" + config["filename"] + "." + "spectral-modularity"
+            ]
+    subp = subprocess.Popen(cmdlist)
+    (vm_size, exec_time) = process_stat(subp)
+    if exec_time > MAX_EXEC_TIME:
+        subp.kill()
+        subp.wait()
+    with open(config["location"]+"/"+config["filename"]+"."+"spectral-modularity"+"."+"stats", "w") as f:
+        content = str(subp.poll()) + " " + str(vm_size) + " " + str(exec_time) + "\n"
+        f.write(content)
+        f.close()
+
         
 if __name__=="__main__":
     f = open('config.json',)
@@ -80,11 +99,16 @@ if __name__=="__main__":
         for alg in config["algorithms"]:
             print("Running", alg["name"], "on", item["name"])
             if alg["name"] == "infomap":
-                stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"infomap"+"."+"stat")
+                stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"infomap"+"."+"stats")
+                print(stat_file_path.is_file())
                 if not stat_file_path.exists():
                     run_infomap(item)
             elif alg["name"] == "louvain":
-                stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"louvain"+"."+"stat")
+                stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"louvain"+"."+"stats")
                 if not stat_file_path.exists():
                     run_louvain(item)
+            elif alg["name"] == "spectral-modularity":
+                stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"spectral-modularity"+"."+"stats")
+                if not stat_file_path.exists():
+                    run_spectral_modularity(item)
 
