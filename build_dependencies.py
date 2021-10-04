@@ -11,6 +11,9 @@ def build_infomap():
     cmdlist = ["make"]
     subp = subprocess.Popen(cmdlist)
     subp.wait()
+    if subp.poll() != 0:
+        print("COMMAND FAILED:", " ".join(cmdlist))
+        return
 
 def build_igraph():
     print("[build_igraph]")
@@ -33,9 +36,25 @@ def build_igraph():
                 "-DIGRAPH_USE_INTERNAL_CXSPARSE=ON",
                 "-DIGRAPH_USE_INTERNAL_GMP=OFF"
             ]
-    subprocess.run(cmdlist)
-    subprocess.run(["cmake", "--build", "."])
-    subprocess.run(["cmake", "--install", "."])
+    subp = subprocess.Popen(cmdlist)
+    subp.wait()
+    if subp.poll() != 0:
+        print("COMMAND FAILED:", " ".join(cmdlist))
+        return
+
+    cmdlist = ["cmake", "--build", "."]
+    subp = subprocess.Popen(cmdlist)
+    subp.wait()
+    if subp.poll() != 0:
+        print("COMMAND FAILED:", " ".join(cmdlist))
+        return
+    
+    cmdlist = ["cmake", "--install", "."]
+    subp = subprocess.Popen(cmdlist)
+    subp.wait()
+    if subp.poll() != 0:
+        print("COMMAND FAILED:", " ".join(cmdlist))
+        return
 
 def build_louvain():
     print("[build_louvain]")
@@ -43,9 +62,13 @@ def build_louvain():
     os.chdir("dependencies/louvain")
     if Path("./louvain").is_file():
         return
+
     cmdlist = ["make", "louvain"]
     subp = subprocess.Popen(cmdlist)
     subp.wait()
+    if subp.poll() != 0:
+        print("COMMAND FAILED:", " ".join(cmdlist))
+        return
 
 def build_spectral_modularity():
     print("[build_spectral_modularity]")
@@ -53,9 +76,36 @@ def build_spectral_modularity():
     os.chdir("dependencies/spectral-modularity")
     if Path("./spectral-modularity").is_file():
         return
+
     cmdlist = ["make", "all"]
     subp = subprocess.Popen(cmdlist)
     subp.wait()
+    if subp.poll() != 0:
+        print("COMMAND FAILED:", " ".join(cmdlist))
+        return
+
+def build_mcl():
+    print("[build_spectral_modularity]")
+    os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
+    os.chdir("dependencies/mcl-14-137")
+    if Path("./install").is_dir():
+        return
+
+    os.mkdir("install")
+    cmdlist = ["./configure", "--prefix="+os.environ["GCLUST_JUNGLE_HOME"]+"/dependencies/mcl-14-137/install/"]
+    subp = subprocess.Popen(cmdlist)
+    subp.wait()
+    if subp.poll() != 0:
+        print("COMMAND FAILED:", " ".join(cmdlist))
+        return
+
+    cmdlist = ["make", "install"]
+    subp = subprocess.Popen(cmdlist)
+    subp.wait()
+    if subp.poll() != 0:
+        print("COMMAND FAILED:", " ".join(cmdlist))
+        return
+
 
 
 if __name__=="__main__":
@@ -63,3 +113,4 @@ if __name__=="__main__":
     build_igraph()
     build_louvain()
     build_spectral_modularity()
+    build_mcl()

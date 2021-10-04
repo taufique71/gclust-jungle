@@ -6,8 +6,9 @@ from scipy import io as spio
 import json
 import subprocess
 import time
+import sys
 
-MAX_EXEC_TIME = 3600 # 1 hour
+MAX_EXEC_TIME = 7200 # 3 hours
 
 def process_stat(proc):
     peak_vm_size = 0
@@ -89,26 +90,66 @@ def run_spectral_modularity(config):
         f.write(content)
         f.close()
 
+def run_mcl(config):
+    print("[run_mcl]:", config["name"])
+    os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
+    os.chdir("dependencies/mcl-14-137/install/bin")
+    cmdlist = [
+                "./mcl",
+                config["location"] + "/" + config["filename"] + "." + "edgelist",
+                "--abc",
+                "-o",
+                config["location"] + "/" + config["filename"] + "." + "mcl"
+            ]
+    # print(" ".join(cmdlist))
+    subp = subprocess.Popen(cmdlist)
+    (vm_size, exec_time) = process_stat(subp)
+    if exec_time > MAX_EXEC_TIME:
+        subp.kill()
+        subp.wait()
+    with open(config["location"]+"/"+config["filename"]+"."+"mcl"+"."+"stats", "w") as f:
+        content = str(subp.poll()) + " " + str(vm_size) + " " + str(exec_time) + "\n"
+        f.write(content)
+        f.close()
+
         
 if __name__=="__main__":
     f = open('config.json',)
     config = json.load(f)
+
+    # Determine which dataset to use
+    # Always use dataset specified in config
     dset = config["dataset"]
-    # print(len(ds_config));
+    
+    # Determine which algorithms to run
+    algset = []
+    if len(sys.argv) < 2:
+        # If no algorithm is specified then read from config file
+        algset = config["algorithms"]
+    else:
+        # If algorithms are specified then use the specified algorithms
+        i = 1
+        while i < len(sys.argv):
+            algset.append(sys.argv[i])
+            i = i+1
+
     for item in dset:
-        for alg in config["algorithms"]:
-            print("Running", alg["name"], "on", item["name"])
-            if alg["name"] == "infomap":
+        for alg in algset:
+            print("Running", alg, "on", item["name"])
+            if alg == "infomap":
                 stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"infomap"+"."+"stats")
-                print(stat_file_path.is_file())
                 if not stat_file_path.exists():
                     run_infomap(item)
-            elif alg["name"] == "louvain":
+            elif alg == "louvain":
                 stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"louvain"+"."+"stats")
                 if not stat_file_path.exists():
                     run_louvain(item)
-            elif alg["name"] == "spectral-modularity":
+            elif alg == "spectral-modularity":
                 stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"spectral-modularity"+"."+"stats")
                 if not stat_file_path.exists():
                     run_spectral_modularity(item)
+            elif alg == "mcl":
+                stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"mcl"+"."+"stats")
+                if not stat_file_path.exists():
+                    run_mcl(item)
 
