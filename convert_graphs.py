@@ -25,7 +25,18 @@ def mtx_to_pajek(input_file, output_file):
 def edgelist_to_bcsr(input_file, output_file):
     print("edgelist_to_bcsr")
     # python convert.py --format weighted_edgelist /N/u2/t/taufique/Codes/gclust-jungle/data/email-Eu-core/email-Eu-core.edgelist /N/u2/t/taufique/Codes/gclust-jungle/data/email-Eu-core/email-Eu-core.bcsr
-    cmdlist = ["python", "dependencies/verse/python/convert.py", "--format", "weighted_edgelist", input_file, output_file]
+    weighted = None
+    with open(input_file) as f:
+        first_line = f.readline()
+        tokens = first_line.split(" ")
+        if len(tokens) > 2:
+            weighted = True
+        else:
+            weighted = False
+
+    cmdlist = ["python", "dependencies/verse/python/convert.py", "--format", "edgelist", input_file, output_file]
+    if weighted == True:
+        cmdlist = ["python", "dependencies/verse/python/convert.py", "--format", "weighted_edgelist", input_file, output_file]
     subprocess.run(cmdlist)
     print("Written:", output_file)
         
