@@ -111,6 +111,7 @@ if [ ! -d "uk-2002" ]; then
         wget https://sparse.tamu.edu/MM/LAW/uk-2002.tar.gz
     fi
     tar -xvzf uk-2002.tar.gz
+    sed '1,48d' uk-2002/uk-2002.mtx > uk-2002/uk-2002.edgelist
 fi
 
 if [ ! -d "delaunay_n22" ]; then
@@ -118,6 +119,7 @@ if [ ! -d "delaunay_n22" ]; then
         wget https://sparse.tamu.edu/MM/DIMACS10/delaunay_n22.tar.gz
     fi
     tar -xvzf delaunay_n22.tar.gz
+    sed '1,131d' delaunay_n22/delaunay_n22.mtx > delaunay_n22/delaunay_n22.edgelist
 fi
 
 if [ ! -d "delaunay_n24" ]; then
@@ -125,6 +127,7 @@ if [ ! -d "delaunay_n24" ]; then
         wget https://sparse.tamu.edu/MM/DIMACS10/delaunay_n24.tar.gz
     fi
     tar -xvzf delaunay_n24.tar.gz
+    sed '1,131d' delaunay_n24/delaunay_n24.mtx > delaunay_n24/delaunay_n24.edgelist
 fi
 
 if [ ! -d "com-LiveJournal" ]; then
@@ -139,6 +142,7 @@ if [ ! -d "com-Orkut" ]; then
         wget https://sparse.tamu.edu/MM/SNAP/com-Orkut.tar.gz
     fi
     tar -xvzf com-Orkut.tar.gz
+    sed '1,88d' com-Orkut/com-Orkut.mtx > com-Orkut/com-Orkut.edgelist
 fi
 
 if [ ! -d "webbase-2001" ]; then
