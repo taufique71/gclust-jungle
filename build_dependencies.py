@@ -84,6 +84,20 @@ def build_spectral_modularity():
         print("COMMAND FAILED:", " ".join(cmdlist))
         return
 
+def build_label_prop():
+    print("[build_label_prop]")
+    os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
+    os.chdir("dependencies/label-prop")
+    if Path("./label-prop").is_file():
+        return
+
+    cmdlist = ["make", "all"]
+    subp = subprocess.Popen(cmdlist)
+    subp.wait()
+    if subp.poll() != 0:
+        print("COMMAND FAILED:", " ".join(cmdlist))
+        return
+
 def build_mcl():
     print("[build_mcl]")
     os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
@@ -128,3 +142,4 @@ if __name__=="__main__":
     build_spectral_modularity()
     build_mcl()
     build_verse()
+    build_label_prop()
