@@ -85,7 +85,7 @@ def build_spectral_modularity():
         return
 
 def build_mcl():
-    print("[build_spectral_modularity]")
+    print("[build_mcl]")
     os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
     os.chdir("dependencies/mcl-14-137")
     if Path("./install").is_dir():
@@ -106,6 +106,19 @@ def build_mcl():
         print("COMMAND FAILED:", " ".join(cmdlist))
         return
 
+def build_verse():
+    print("[build_verse]")
+    os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
+    os.chdir("dependencies/verse/src")
+    if Path("./verse").is_file():
+        return
+
+    cmdlist = ["make"]
+    subp = subprocess.Popen(cmdlist)
+    subp.wait()
+    if subp.poll() != 0:
+        print("COMMAND FAILED:", " ".join(cmdlist))
+        return
 
 
 if __name__=="__main__":
@@ -114,3 +127,4 @@ if __name__=="__main__":
     build_louvain()
     build_spectral_modularity()
     build_mcl()
+    build_verse()

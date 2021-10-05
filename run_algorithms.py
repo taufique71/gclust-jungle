@@ -112,6 +112,32 @@ def run_mcl(config):
         f.write(content)
         f.close()
 
+def run_verse(config):
+    print("[run_verse]:", config["name"])
+    os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
+    os.chdir("dependencies/verse/src")
+    cmdlist = [
+                "./verse",
+                "-input",
+                config["location"] + "/" + config["filename"] + "." + "bcsr",
+                "-output",
+                config["location"] + "/" + config["filename"] + "." + "verse-emb",
+                "-dim 128",
+                "-alpha 0.85",
+                "-threads 1",
+                "-nsample 3"
+            ]
+    print(" ".join(cmdlist))
+    subp = subprocess.Popen(cmdlist)
+    (vm_size, exec_time) = process_stat(subp)
+    if exec_time > MAX_EXEC_TIME:
+        subp.kill()
+        subp.wait()
+    with open(config["location"]+"/"+config["filename"]+"."+"verse-emb"+"."+"stats", "w") as f:
+        content = str(subp.poll()) + " " + str(vm_size) + " " + str(exec_time) + "\n"
+        f.write(content)
+        f.close()
+
         
 if __name__=="__main__":
     f = open('config.json',)
@@ -152,4 +178,8 @@ if __name__=="__main__":
                 stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"mcl"+"."+"stats")
                 if not stat_file_path.exists():
                     run_mcl(item)
+            elif alg == "verse-emb":
+                stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"verse-emb"+"."+"stats")
+                if not stat_file_path.exists():
+                    run_verse(item)
 

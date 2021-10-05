@@ -37,8 +37,13 @@ def edgelist_to_bcsr(input_file, output_file):
     cmdlist = ["python", "dependencies/verse/python/convert.py", "--format", "edgelist", input_file, output_file]
     if weighted == True:
         cmdlist = ["python", "dependencies/verse/python/convert.py", "--format", "weighted_edgelist", input_file, output_file]
-    subprocess.run(cmdlist)
-    print("Written:", output_file)
+    subp = subprocess.Popen(cmdlist)
+    subp.wait()
+    if subp.poll() != 0:
+        print(" ".join(cmdlist))
+    else:
+        print("Written:", output_file)
+
         
 if __name__=="__main__":
     f = open('config.json',)
