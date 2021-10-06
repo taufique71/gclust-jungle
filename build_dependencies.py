@@ -70,6 +70,20 @@ def build_louvain():
         print("COMMAND FAILED:", " ".join(cmdlist))
         return
 
+def build_gn_edge_btn():
+    print("[build_gn_edge_btn]")
+    os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
+    os.chdir("dependencies/gn-edge-btn")
+    if Path("./gn-edge-btn").is_file():
+        return
+
+    cmdlist = ["make", "gn-edge-btn"]
+    subp = subprocess.Popen(cmdlist)
+    subp.wait()
+    if subp.poll() != 0:
+        print("COMMAND FAILED:", " ".join(cmdlist))
+        return
+
 def build_spectral_modularity():
     print("[build_spectral_modularity]")
     os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
@@ -158,3 +172,4 @@ if __name__=="__main__":
     build_verse()
     build_label_prop()
     build_spectral_embedding()
+    build_gn_edge_btn()

@@ -178,6 +178,25 @@ def run_label_prop(config):
         content = str(subp.poll()) + " " + str(vm_size) + " " + str(exec_time) + "\n"
         f.write(content)
         f.close()
+
+def run_gn_edge_btn(config):
+    print("[run_gn_edge_btn]:", config["name"])
+    os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
+    os.chdir("dependencies/gn-edge-btn")
+    cmdlist = [
+                "./gn-edge-btn",
+                config["location"] + "/" + config["filename"] + "." + "edgelist",
+                config["location"] + "/" + config["filename"] + "." + "gn-edge-btn"
+            ]
+    subp = subprocess.Popen(cmdlist)
+    (vm_size, exec_time) = process_stat(subp)
+    if exec_time > MAX_EXEC_TIME:
+        subp.kill()
+        subp.wait()
+    with open(config["location"]+"/"+config["filename"]+"."+"gn-edge-btn"+"."+"stats", "w") as f:
+        content = str(subp.poll()) + " " + str(vm_size) + " " + str(exec_time) + "\n"
+        f.write(content)
+        f.close()
         
 if __name__=="__main__":
     f = open('config.json',)
@@ -230,4 +249,8 @@ if __name__=="__main__":
                 stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"label-prop"+"."+"stats")
                 if not stat_file_path.exists():
                     run_label_prop(item)
+            elif alg == "gn-edge-btn":
+                stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"gn-edge-btn"+"."+"stats")
+                if not stat_file_path.exists():
+                    run_gn_edge_btn(item)
 
