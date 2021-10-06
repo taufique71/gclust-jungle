@@ -134,6 +134,20 @@ def build_verse():
         print("COMMAND FAILED:", " ".join(cmdlist))
         return
 
+def build_spectral_embedding():
+    print("[build_spectral_embedding]")
+    os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
+    os.chdir("dependencies/spectral-embedding")
+    if Path("./spectral-embedding").is_file():
+        return
+
+    cmdlist = ["make", "all"]
+    subp = subprocess.Popen(cmdlist)
+    subp.wait()
+    if subp.poll() != 0:
+        print("COMMAND FAILED:", " ".join(cmdlist))
+        return
+
 
 if __name__=="__main__":
     build_infomap()
@@ -143,3 +157,4 @@ if __name__=="__main__":
     build_mcl()
     build_verse()
     build_label_prop()
+    build_spectral_embedding()

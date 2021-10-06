@@ -139,6 +139,27 @@ def run_verse(config):
         f.write(content)
         f.close()
 
+def run_spectral_embedding(config):
+    print("[run_spectral_embedding]:", config["name"])
+    os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
+    os.chdir("dependencies/spectral-embedding")
+    cmdlist = [
+                "./spectral-embedding",
+                config["location"] + "/" + config["filename"] + "." + "edgelist",
+                config["location"] + "/" + config["filename"] + "." + "spec-emb",
+                "128"
+            ]
+    print(" ".join(cmdlist))
+    subp = subprocess.Popen(cmdlist)
+    (vm_size, exec_time) = process_stat(subp)
+    if exec_time > MAX_EXEC_TIME:
+        subp.kill()
+        subp.wait()
+    with open(config["location"]+"/"+config["filename"]+"."+"spec-emb"+"."+"stats", "w") as f:
+        content = str(subp.poll()) + " " + str(vm_size) + " " + str(exec_time) + "\n"
+        f.write(content)
+        f.close()
+
 def run_label_prop(config):
     print("[run_label_prop]:", config["name"])
     os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
@@ -201,6 +222,10 @@ if __name__=="__main__":
                 stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"verse-emb"+"."+"stats")
                 if not stat_file_path.exists():
                     run_verse(item)
+            elif alg == "spec-emb":
+                stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"spec-emb"+"."+"stats")
+                if not stat_file_path.exists():
+                    run_spectral_embedding(item)
             elif alg == "label-prop":
                 stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"label-prop"+"."+"stats")
                 if not stat_file_path.exists():
