@@ -52,6 +52,30 @@ def run_infomap(config):
         f.write(content)
         f.close()
 
+def run_infomap_parallel(config):
+    print("[run_infomap_parallel]:", config["name"])
+    os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
+    os.chdir("dependencies/infomap")
+    cmdlist = [
+                "./Infomap",
+                config["location"] + "/" + config["filename"] + "." + "edgelist",
+                config["location"],
+                # "--output", "clu",
+                "--out-name", config["filename"] + "." + "infomap-parallel",
+                "--clu",
+                "--flow-model", "undirected",
+                "-N", "1",
+            ]
+    subp = subprocess.Popen(cmdlist)
+    (vm_size, exec_time) = process_stat(subp)
+    if exec_time > MAX_EXEC_TIME:
+        subp.kill()
+        subp.wait()
+    with open(config["location"]+"/"+config["filename"]+"."+"infomap"+"."+"stats", "w") as f:
+        content = str(subp.poll()) + " " + str(vm_size) + " " + str(exec_time) + "\n"
+        f.write(content)
+        f.close()
+
 def run_louvain(config):
     print("[run_louvain]:", config["name"])
     os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
@@ -288,6 +312,10 @@ if __name__=="__main__":
                 stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"infomap"+"."+"stats")
                 if not stat_file_path.exists():
                     run_infomap(item)
+            if alg == "infomap-parallel":
+                stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"infomap-parallel"+"."+"stats")
+                if not stat_file_path.exists():
+                    run_infomap_parallel(item)
             elif alg == "louvain":
                 stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"louvain"+"."+"stats")
                 if not stat_file_path.exists():
