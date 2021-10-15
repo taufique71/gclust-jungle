@@ -184,6 +184,32 @@ def run_verse(config):
         f.write(content)
         f.close()
 
+def run_deepwalk(config):
+    print("[run_deepwalk]:", config["name"])
+    os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
+    os.chdir("dependencies/deepwalk")
+    cmdlist = [
+                "deepwalk",
+                "--input",
+                config["location"] + "/" + config["filename"] + "." + "edgelist",
+                "--format",
+                "edgelist",
+                "--output",
+                config["location"] + "/" + config["filename"] + "." + "deepwalk-emb",
+                "--workers",
+                "1"
+            ]
+    print(" ".join(cmdlist))
+    subp = subprocess.Popen(cmdlist)
+    (vm_size, exec_time) = process_stat(subp)
+    if exec_time > MAX_EXEC_TIME:
+        subp.kill()
+        subp.wait()
+    with open(config["location"]+"/"+config["filename"]+"."+"deepwalk-emb"+"."+"stats", "w") as f:
+        content = str(subp.poll()) + " " + str(vm_size) + " " + str(exec_time) + "\n"
+        f.write(content)
+        f.close()
+
 def run_spectral_embedding(config):
     print("[run_spectral_embedding]:", config["name"])
     os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
@@ -192,7 +218,7 @@ def run_spectral_embedding(config):
                 "./spectral-embedding",
                 config["location"] + "/" + config["filename"] + "." + "edgelist",
                 config["location"] + "/" + config["filename"] + "." + "spec-emb",
-                "128"
+                "32"
             ]
     print(" ".join(cmdlist))
     subp = subprocess.Popen(cmdlist)
@@ -232,8 +258,7 @@ def run_label_prop_parallel(config):
                 "python",
                 "./label-prop-parallel.py",
                 config["location"] + "/" + config["filename"] + "." + "edgelist",
-                config["location"] + "/" + config["filename"] + "." + "label-prop-parallel",
-                "128"
+                config["location"] + "/" + config["filename"] + "." + "label-prop-parallel"
             ]
     subp = subprocess.Popen(cmdlist)
     (vm_size, exec_time) = process_stat(subp)
@@ -272,8 +297,7 @@ def run_kernighan_lin(config):
                 "python",
                 "./kernighan-lin.py",
                 config["location"] + "/" + config["filename"] + "." + "mtx",
-                config["location"] + "/" + config["filename"] + "." + "kernighan-lin",
-                "128"
+                config["location"] + "/" + config["filename"] + "." + "kernighan-lin"
             ]
     subp = subprocess.Popen(cmdlist)
     (vm_size, exec_time) = process_stat(subp)
@@ -281,6 +305,27 @@ def run_kernighan_lin(config):
         subp.kill()
         subp.wait()
     with open(config["location"]+"/"+config["filename"]+"."+"kernighan-lin"+"."+"stats", "w") as f:
+        content = str(subp.poll()) + " " + str(vm_size) + " " + str(exec_time) + "\n"
+        f.write(content)
+        f.close()
+
+def run_kmeans_spectral(config):
+    print("[run_kmeans_spectral]:", config["name"])
+    os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
+    os.chdir("dependencies/kmeans-embedding")
+    cmdlist = [
+                "python",
+                "./kmeans-embedding.py",
+                config["location"] + "/" + config["filename"] + "." + "spec-emb",
+                config["location"] + "/" + config["filename"] + "." + "kmeans-spec",
+                "32"
+            ]
+    subp = subprocess.Popen(cmdlist)
+    (vm_size, exec_time) = process_stat(subp)
+    if exec_time > MAX_EXEC_TIME:
+        subp.kill()
+        subp.wait()
+    with open(config["location"]+"/"+config["filename"]+"."+"kmeans-spec"+"."+"stats", "w") as f:
         content = str(subp.poll()) + " " + str(vm_size) + " " + str(exec_time) + "\n"
         f.write(content)
         f.close()
@@ -336,10 +381,16 @@ if __name__=="__main__":
                 stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"verse-emb"+"."+"stats")
                 if not stat_file_path.exists():
                     run_verse(item)
+            elif alg == "deepwalk-emb":
+                stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"deepwalk-emb"+"."+"stats")
+                if not stat_file_path.exists():
+                    run_deepwalk(item)
+                # run_deepwalk(item)
             elif alg == "spec-emb":
                 stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"spec-emb"+"."+"stats")
                 if not stat_file_path.exists():
                     run_spectral_embedding(item)
+                run_spectral_embedding(item)
             elif alg == "label-prop":
                 stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"label-prop"+"."+"stats")
                 if not stat_file_path.exists():
@@ -356,4 +407,9 @@ if __name__=="__main__":
                 stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"kernighan-lin"+"."+"stats")
                 if not stat_file_path.exists():
                     run_kernighan_lin(item)
+            elif alg == "kmeans-spec":
+                stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"kmeans-spec"+"."+"stats")
+                if not stat_file_path.exists():
+                    run_kmeans_spectral(item)
+                # run_kmeans_spectral(item)
 

@@ -148,6 +148,27 @@ def build_verse():
         print("COMMAND FAILED:", " ".join(cmdlist))
         return
 
+def build_deepwalk():
+    print("[build_deepwalk]")
+    os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
+    os.chdir("dependencies/deepwalk")
+    # if Path("./verse").is_file():
+        # return
+
+    cmdlist = ["pip", "install", "-r", "requirements.txt"]
+    subp = subprocess.Popen(cmdlist)
+    subp.wait()
+    if subp.poll() != 0:
+        print("COMMAND FAILED:", " ".join(cmdlist))
+        return
+
+    cmdlist = ["python", "setup.py", "install"]
+    subp = subprocess.Popen(cmdlist)
+    subp.wait()
+    if subp.poll() != 0:
+        print("COMMAND FAILED:", " ".join(cmdlist))
+        return
+
 def build_spectral_embedding():
     print("[build_spectral_embedding]")
     os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
@@ -173,3 +194,4 @@ if __name__=="__main__":
     build_label_prop()
     build_spectral_embedding()
     build_gn_edge_btn()
+    # build_deepwalk()

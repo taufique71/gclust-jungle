@@ -7,3 +7,6 @@
 [submodule "dependencies/verse"]
 	path = dependencies/verse
 	url = https://github.com/xgfs/verse.git
+[submodule "dependencies/deepwalk"]
+	path = dependencies/deepwalk
+	url = https://github.com/phanein/deepwalk.git
