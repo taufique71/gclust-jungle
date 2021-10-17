@@ -318,7 +318,8 @@ def run_kmeans_spectral(config):
                 "./kmeans-embedding.py",
                 config["location"] + "/" + config["filename"] + "." + "spec-emb",
                 config["location"] + "/" + config["filename"] + "." + "kmeans-spec",
-                "32"
+                "32",
+                str(config["nodes"])
             ]
     subp = subprocess.Popen(cmdlist)
     (vm_size, exec_time) = process_stat(subp)
@@ -326,6 +327,29 @@ def run_kmeans_spectral(config):
         subp.kill()
         subp.wait()
     with open(config["location"]+"/"+config["filename"]+"."+"kmeans-spec"+"."+"stats", "w") as f:
+        content = str(subp.poll()) + " " + str(vm_size) + " " + str(exec_time) + "\n"
+        f.write(content)
+        f.close()
+
+def run_kmeans_verse(config):
+    print("[run_kmeans_verse]:", config["name"])
+    print(config)
+    os.chdir(os.environ["GCLUST_JUNGLE_HOME"])
+    os.chdir("dependencies/kmeans-embedding")
+    cmdlist = [
+                "python",
+                "./kmeans-embedding.py",
+                config["location"] + "/" + config["filename"] + "." + "verse-emb",
+                config["location"] + "/" + config["filename"] + "." + "kmeans-verse",
+                "32",
+                str(config["nodes"])
+            ]
+    subp = subprocess.Popen(cmdlist)
+    (vm_size, exec_time) = process_stat(subp)
+    if exec_time > MAX_EXEC_TIME:
+        subp.kill()
+        subp.wait()
+    with open(config["location"]+"/"+config["filename"]+"."+"kmeans-verse"+"."+"stats", "w") as f:
         content = str(subp.poll()) + " " + str(vm_size) + " " + str(exec_time) + "\n"
         f.write(content)
         f.close()
@@ -381,16 +405,12 @@ if __name__=="__main__":
                 stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"verse-emb"+"."+"stats")
                 if not stat_file_path.exists():
                     run_verse(item)
-            elif alg == "deepwalk-emb":
-                stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"deepwalk-emb"+"."+"stats")
-                if not stat_file_path.exists():
-                    run_deepwalk(item)
-                # run_deepwalk(item)
+                # run_verse(item)
             elif alg == "spec-emb":
                 stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"spec-emb"+"."+"stats")
                 if not stat_file_path.exists():
                     run_spectral_embedding(item)
-                run_spectral_embedding(item)
+                # run_spectral_embedding(item)
             elif alg == "label-prop":
                 stat_file_path = Path(item["location"]+"/"+item["filename"]+"."+"label-prop"+"."+"stats")
                 if not stat_file_path.exists():
@@ -412,4 +432,6 @@ if __name__=="__main__":
                 if not stat_file_path.exists():
                     run_kmeans_spectral(item)
                 # run_kmeans_spectral(item)
+            elif alg == "kmeans-verse":
+                run_kmeans_verse(item)
 
